@@ -1,6 +1,6 @@
 # Unified Express API Migration Guide
 
-Our new Unified Express API Path provides the most efficient way of distributing all available PPN inventory in a single API call.
+Our new Unified Express API Path provides the most efficent way of distributing all available PPN inventory in a single API call.
 
 In addition, several major new features improve the ease of use of the API and expand the number of, variety of, and information on inventory we provide.
 
@@ -17,31 +17,31 @@ Use of this feature is optional, but recommended.
 This output version brings two main improvements, both of which are breaking changes that will require development against.
 
 1. **Consistency**  
-   Object structures, datatypes, and hierarchies are now consistent between the calls.  
+   Object structures, datatypes, and heirarchies are now consistent between the calls.  
    Calls increase levels of verbosity and "fill in blanks", rather than retooling the output entirely.
 2. **Better Organization**  
-   Across calls we now encourage a consistent hierarchy of hotels; a hotel having multiple rooms, and a room having multiple rates.  
+   Across calls, we now encourage a consistent heirarchy of hotels, a hotel having multiple rooms, and a room having multiple rates.  
    Not only should this be simpler to process, and increase conversion by allowing more buying options earlier in the path, but it allows you to market the inventory more effectively -- allowing customers to visualize the room they're buying, and then decide on the details of the pricing/rate features in that room (cancellation policies, room and board options) that matter to them.
    
 More details on these are provided further in this document.
    
-Migrating into this updated structure is optional, but recommended.  
-As such, we will be defaulting all new partners (all new refids) into this structure.  
+Migrating into this updated structure is options, but recommended.  
+As such, we will be defaulting all new partners (all new refids) into this structure by default.  
 Also, passing `output_version=3` to the `Express.Results` call will imply that output version for any future `Express.MultiContract` or `Express.Contract` call, if no other `output_version` parameter is manually supplied to those calls.
 
 To prevent any future regressions (for example, if your account manager provisions a new refid, it will be defaulted into the new output version and potentially not match your existing refids), it is recommended you start being explicit in your requests to `Express.Results`, `Express.MultiContract` and `Express.Contract` by sending a query parameter `output_version=1` to lock in the current response format.
 
-From there, we've left the migration path completely in your control. You may start sending `output_version=3` to any of these calls at any time to test the new format and migrate at your leisure.
+From there, we've left the migration path completely in your control. You may start sending `output_version=3` to any of these calls at any time to test the new format and migrate at your liesure.
 
 ## `json2` Format Style
 
-To create a more true JSON output syntax, an optional `format=json2` parameter may be sent along with any request.
+To create a more true JSON output sytnax, an optional `format=json2` parameter may be sent along with any request.
 
 Use of this feature is optional.
 
 This differs from our typical `format=json` syntax by encoding arrays of elements as proper JSON arrays, not as hashmaps.
 
-This is an optional migration, but would be a breaking change that you would need to develop against. We will continue to support the existing `format=json` for the foreseeable future.
+This is an optional migration, but would be a breaking change that you would need to develop against. We will continue to support the existing `format=json` for the forseeable future.
 
 For example, something under `format=json`;
 
@@ -209,21 +209,21 @@ Use of this data can be considered optional, but may be useful in marketing the 
 
 | Node              | Description                                                                                                    |
 |-------------------|----------------------------------------------------------------------------------------------------------------|
-| `occupancy_limit` | A nullable integer, indicates occupancy limit for the room, `null` indicating the information is unavailable  |
-| `available_rooms` | A nullable integer, indicates the number of rooms available, `null` indicating the information is unavailable |
+| `occupancy_limit` | An nullable integer, indicates occupancy limit for the room, `null` indicating the information is unavailable  |
+| `available_rooms` | An nullable integer, indicates the number of rooms available, `null` indicating the information is unavailable |
 | `promo_data`      | An array, containing promotional data available for the rate                                                   |
 
 ### Multiple Rates
 
 By default, in `Express.Results`, each hotel has a single room/rate.
 
-The ability to have multiple rooms and rates returned can be enabled by sending request parameters `rate_limit={maximum number of rates per hotel}` and `output_version=3`.
+The ability to have multiple rooms and rates returned in can be enabled by sending request parameters `rate_limit={maximum number of rates per hotel}` and `output_version=3`.
 
 For example, [https://api.rezserver.com/api/hotel/getExpress.Results?refid={refid}&api\_key={api\_key}&format=json&city\_id=800049480&check\_in=2019-06-25&check\_out=2019-06-27&rooms=1&adults=2&children=0&output\_version=3&rate\_limit=3](https://api.rezserver.com/api/hotel/getExpress.Results?refid=CHANGEME&api\_key=CHANGEME&format=json&city\_id=800049480&check\_in=2019-06-25&check\_out=2019-06-27&rooms=1&adults=2&children=0&output\_version=3&rate\_limit=3).
 
 Use of this data can be considered optional, but may be useful in providing more purchasing options to your customer earlier in the path.
 
-Please see the section titled [Output Version 3](#Output\ Version\ 3) for more information on the `output_version` parameter.
+Please see the section titled [Output Version](#Output Version) for more information on the `output_version` parameter.
 
 This mutates the response structure from just having multiple hotels and each hotel having a single room/rate, to one having multiple hotels, each hotel having one or more rooms, and each room having one or more rates.
 
@@ -361,14 +361,14 @@ For example, the same King Bed room may be offered at $100 with no board, at $11
 
 Use of this data can be considered optional, but may be useful in marketing puchasing options to the customer once they've chose a room type, without overwhelming them with choices.
 
-Please see the section titled [Output Version 3](#Output\ Version\ 3) for more information on the `output_version` parameter.
+Please see the section titled [Output Version](#Output Version) for more information on the `output_version` parameter.
 
 The hierarchy will move from results having a list of room/rate combonations;  
 `results` → `room_data ` → `room_{#}`  
 to results having a hotel, that hotel having one or more rooms, and each room having one or more rates;  
 `results` → `hotel_data` → `room_data ` → `room_{#}` → `rate_data` → `rate_{#}`
 
-Each rate has its own `ppn_book_bundle` that can be used to make an `Express.Contract` or `Express.Book` call for that rate (some content omitted for brevity);
+Each rate has its own `ppn_book_bundle` that can be used to make a `Express.Contract` or `Express.Book` call for that rate (some content omitted for brevity);
 
 ```json
 {
@@ -448,7 +448,7 @@ The new element can be found at `results` → `result` → `actions` → `cancel
 }
 ```
 
-When present, this node contains an encoded bundle string that can be used to submit a cancel request for that hotel reservation to the new `Express.Cancel` endpoint.
+When present, this node contains an encoded bundle string can be used to submit a cancel request for that hotel reservation to the new `Express.Cancel` endpoint.
 
 Sample request;
 
@@ -542,7 +542,7 @@ In the `Express.Results`, `Express.MultiContract`, and `Express.Contract` respon
 
 For mandatory fees that are to be paid when the customer checks in (`postpaid`), the total fee value will **not** be included in the total price (in `price_details`), so it would need to be communicated as a separate item outside of the total to inform the customer.
 
-Conversely, for mandatory fees that are to be paid when the customer books (`prepaid`), the total fee value **will** be included in the total price (in `price_details`), so it would need to be communicated as a line item in the summary of charges so as to have the math make sense.
+Convesely, for mandatory fees that are to be paid when the customer books (`prepaid`), the total fee value **will** be included in the total price (in `price_details`), so it would need to be communicated as a line item in the summary of charges so as to have the math make sense.
 
 Using the itemized details in `mandatory_fee_details` → `breakdown` → `postpaid`/`prepaid` → `breakdown` can be used to display each individual fee, but is not required.
 
