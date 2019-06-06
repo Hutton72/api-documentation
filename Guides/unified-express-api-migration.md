@@ -1,33 +1,33 @@
-# Unified Hotel Express API Migration Guide
+# Unified Express Path - API Migration Guide
 
-Our new Unified Hotel Express API provides the most efficient way of distributing all available PPN inventory in a single API call.
+Our new Unified Express Path now offers all of our world class hotel inventories from a single API request.
 
-In addition, several major new features improve the ease of use of the API and expand the number of, variety of, and information on inventory we provide.
+Several new features improve usability and enhance the variety and detail of the data now supplied by our API endpoints.
 
-Some of this new functionality is optional, and some is required to recognize and accurately and effectively market and sell this new inventory.
+While some of this new functionality is optional, other elements are required in order to recognize and effectively market these  amalgamated inventory types.
 
 We hope this migration guide will provide a good starting point to explain these new opportunities.
 
 ## Output Version
 
-This API update introduces a new output version (version 3) which can be used at the `Express.Results`, `Express.Contract` and `Express.MultiContract` calls.
+This API update introduces a new output version (version 3) which can be used with the `Express.Results`, `Express.Contract` and `Express.MultiContract` requests.
 
-This output version brings two main improvements, both of which are breaking changes that will require development against.
+This new output version brings two main improvements, both of which are breaking changes from the standard, previous implemetation of the Express path.  It will require some minor development to realize these benefits. 
 
 1. **Consistency**  
-   Object structures, data types, and hierarchies are now consistent between the calls.  
-   Calls increase levels of verbosity and "fill in blanks", rather than retooling the output entirely.
+   Object structures, data types, and hierarchies are now consistent between the Express.Results, Express.MultiContract, and Express.Contract requests.  
+   Increased verbosity of the data provided will help "fill in the blanks", rather than retooling the current output entirely.
 2. **Better Organization**  
-   Across calls we now encourage a consistent hierarchy of hotels; a hotel having multiple rooms, and a room having multiple rates.  
-   Not only should this be simpler to process, and increase conversion by allowing more buying options earlier in the path, but it allows you to market the inventory more effectively -- allowing customers to visualize the room they're buying, and then decide on the details of the pricing/rate features in that room (cancellation policies, room and board options) that matter to them.
+   We now expose a consistent hierarchy of hotel and room data; a hotel possibly having multiple rooms, and a room having possible multiple rates.  
+   Not only will this consistant hierarchy be simpler to process, it will increase conversion by exposing more buying options earlier in the path.  It also allows you to market our inventory more effectively by allowing your customers to compare pricing and feature options available, such as differnent cancellation policies and board options.
    
 More details on these are provided further in this document.
-   
-Migrating into this updated structure is optional, but recommended.  
-As such, we will be defaulting all new partners (i.e. all new refids) into this structure.  
-Also, passing `output_version=3` to the `Express.Results` call will imply that output version for any future `Express.Contract` or `Express.MultiContract` call, if no other `output_version` parameter is explicitly supplied to those calls.
+ 
+We highly reccomend you migrate to our enhanced new output structure and enjoy all of the benefits it delivers. 
+ 
+Note - passing `output_version=3` to the `Express.Results` call will apply the new output structure to all further requests in the path.  You do not need to explicitly use the output_version=3 in the follow-up `Express.Contract` or `Express.MultiContract` request.  The  output_version=3 will be automatically passed along inside the ppn_bundle.
 
-To prevent any future regressions (for example, if your account manager provisions a new refid, it will be defaulted into the new output version and potentially not match your existing refids), it is recommended you start being explicit in your requests to `Express.Results`, `Express.Contract` and `Express.MultiContract` by sending a query parameter `output_version=1` to lock in the current response format.
+To prevent any future regressions (for example, if your account manager provides you with a new refid, it will be defaulted into the new output version and potentially not match your existing refids), it is recommended you start being explicit in your requests to `Express.Results`, `Express.Contract` and `Express.MultiContract` by sending the `output_version=1` parameter to lock in the legacy response format.
 
 From there, we've left the migration path completely in your control. You may start sending `output_version=3` to any of these calls at any time to test the new format and migrate at your leisure.
 
@@ -77,15 +77,15 @@ would appear as an array in `format=json2`:
 
 ## New Rate Information
 
-Calls that expose rates and rate information (`Express.Results`, `Express.Contract`, `Express.MultiContract`, `Express.Book`, and `Express.LookUp`) have been updated with several new pieces of information.
+Requests that expose rates and rate information (`Express.Results`, `Express.Contract`, `Express.MultiContract`, `Express.Book`, and `Express.LookUp`) have been updated with several new pieces of information.
 
 However, as multiple rate types are now available from a single endpoint, you may need to make business-level decisions based on some of the information below.
 
 ### Commission, Distribution, Payment, and Inventory Type
 
-Calls that expose rates and rate information (`Express.Results`, `Express.Contract`, `Express.MultiContract`, `Express.Book`, and `Express.LookUp`) have been updated to indicate the `commission_type`, `distribution_type`, `payment_type`, and the `inventory_type` to inform you of the style of commission, the distribution gating rules, when payment is due, and the underlying inventory, respectively.
+Requests that expose rates and rate information (`Express.Results`, `Express.Contract`, `Express.MultiContract`, `Express.Book`, and `Express.LookUp`) have been updated to indicate the `commission_type`, `distribution_type`, `payment_type`, and the `inventory_type` to inform you of the style of commission, the distribution gating rules, when payment is due, and the underlying inventory, respectively.
 
-You should review your existing implementation and business rules for any assumptions that may have been made in the past about only a single type of inventory appearing through the Express path.
+You should review your existing implementation and business rules for any assumptions that may have been made in the past, based on the single type of inventory returned through the legacy Express path.
 
 #### `commission_type`
 
@@ -301,7 +301,7 @@ Use of this data can be considered optional, but may be useful in marketing the 
 
 The new `important_information` lists one or more paragraphs of important information about the hotel, room, or rate.
 
-Use of this data to display this information to the customer is strongly encouraged.
+Use of this data to display this information to the customer is strongly encouraged and in some cases required.  Please refer to the certification process documents provided or ask your Account Manager.
 
 ```json
 "important_information": {
